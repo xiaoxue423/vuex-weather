@@ -12,19 +12,36 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
+// import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
+import { computed } from "vue";
+import { useStore } from "vuex";
+
 export default {
-  computed: {
-    ...mapState(["search", "weather"]),
-    ...mapGetters(["searchText"]),
-  },
-  methods: {
-    ...mapMutations(["setSearch", "setWeather"]),
-    ...mapActions(["getWeather"]),
-    setDefault() {
-      this.setSearch("杭州");
-      this.getWeather("杭州");
-    },
+  //   computed: {
+  //     ...mapState(["search", "weather"]),
+  //     ...mapGetters(["searchText"]),
+  //   },
+  //   methods: {
+  //     ...mapMutations(["setSearch", "setWeather"]),
+  //     ...mapActions(["getWeather"]),
+  //     setDefault() {
+  //       this.setSearch("杭州");
+  //       this.getWeather("杭州");
+  //     },
+  //   },
+  setup() {
+    const store = useStore();
+
+    const setDefault = () => {
+      store.commit('setSearch',"杭州");
+      store.dispatch('getWeather',"杭州");
+    };
+
+    return {
+      weather: computed(() => store.state.weather),
+      searchText: computed(() => store.getters.searchText),
+      setDefault,
+    };
   },
 };
 </script>
